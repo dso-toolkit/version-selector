@@ -1,56 +1,73 @@
 (function() {
   'use strict';
+  // Get list of versions from versions.json
+  var oReq = new XMLHttpRequest();
+  oReq.responseType = "json";
+  oReq.addEventListener("load", createSelector);
+  oReq.open("GET", "/versions.json");
+  oReq.send();
 
-  $.ajax({
-    async: false,
-    global: false,
-    url: '/versions.json',
-    dataType: 'json'
-  })
-  .then(function(result) {
-    var json = result.data;
-
+  function createSelector () {
     // Create input select template
-    var template =  '<select id="dsoVersionSelector" class="dso-version-selector" onchange="openVersion()">' +
-      json.versions
-        .reduce(function (branches, item) {
-          var branchLabel = item.branch || item.version.substr(0, 3) + '.x';
-          var branch = branches.filter(function (r) {
-            return r.label === branchLabel;
-          })[0];
+    var jsonVersions = this.response;
+    var selectTemplate = document.createElement("select");
+    var selectId = document.createAttribute("id");
+    var selectClass = document.createAttribute("class");
+    var selectOnChange = document.createAttribute("onchange");
+    selectId.value = "dsoVersionSelector";
+    selectClass.value = "dso-version-selector";
+    selectOnChange.value = "openVersion()";
+    selectTemplate.setAttributeNode(selectId);
+    selectTemplate.setAttributeNode(selectClass);
+    selectTemplate.setAttributeNode(selectOnChange);
 
-          if (!branch) {
-            branch = {
-              label: branchLabel,
-              versions: []
-            };
+    jsonVersions.versions.reduce(function (branches, item) {
+      var branchLabel = item.branch || item.version.substr(0, 3) + '.x';
+      var branch = branches.filter(function (r) {
+        return r.label === branchLabel;
+      })[0];
 
-            branches.push(branch);
+      if (!branch) {
+        branch = {
+          label: branchLabel,
+          versions: []
+        };
+
+        branches.push(branch);
+      }
+      
+      branch.versions.push(item);
+      
+      return branches;
+    }, [])
+    .forEach(function (branch) {
+      var optGroup = document.createElement("optgroup");
+      optGroup.setAttribute('label', branch.label);
+
+      branch.versions
+        .forEach(function (v)  {
+          var option = document.createElement("option");
+          option.setAttribute('value', v.version);
+
+          if (v.version === window.location.pathname.slice(1, -1)) {
+            option.setAttribute('selected', true);
           }
 
-          branch.versions.push(item);
+          option.appendChild(document.createTextNode(v.version));
+          optGroup.appendChild(option);
+        })
 
-          return branches;
-        }, [])
-        .reduce(function (html, branch) {
-          return html + '<optgroup label="' + branch.label + '">' +
-            branch.versions
-              .map(function (v)  {
-                return '<option value="' + v.version + '"' + (v.version === window.location.pathname.substr(1) ? ' selected' : '') + '>' + v.version + '</option>';
-              })
-              .join('\n') +
-          '</optgroup>\n'
-        }, '') +
-    '</select>'
+      selectTemplate.appendChild(optGroup);
+    })
 
     // Insert select in .Header
-    $('.Header').append(template);
+    var header = document.querySelector(".Header");
+    header.appendChild(selectTemplate);
 
     // Open correct version
-    window.openVersion = function () {
-      var version = $('#dsoVersionSelector').val();
-
-      window.location.href = '/' + version;
-    };
-  });
+    window.openVersion = function() {
+      var version = selectTemplate.options[selectTemplate.selectedIndex].value;
+      window.location.href="/" + version;
+    }
+  }
 })();
