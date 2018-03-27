@@ -1,24 +1,30 @@
 (function() {
   'use strict';
   // Get list of versions from versions.json
-  var oReq = new XMLHttpRequest();
-  oReq.responseType = "json";
-  oReq.addEventListener("load", createSelector);
-  oReq.open("GET", "/versions.json");
-  oReq.send();
+  var selectedVersion = window.location.pathname.slice(1, -1);
+
+  var versionRequest = new XMLHttpRequest();
+  versionRequest.responseType = 'json';
+  versionRequest.addEventListener('load', createSelector);
+  versionRequest.open('GET', '/version-selector.json');
+  versionRequest.send();
 
   function createSelector () {
     // Create input select template
     var jsonVersions = this.response;
-    var selectTemplate = document.createElement("select");
-    var selectId = document.createAttribute("id");
-    var selectClass = document.createAttribute("class");
-    var selectOnChange = document.createAttribute("onchange");
-    selectId.value = "dsoVersionSelector";
-    selectClass.value = "dso-version-selector";
-    selectOnChange.value = "openVersion()";
+
+    var selectTemplate = document.createElement('select');
+
+    var selectId = document.createAttribute('id');
+    selectId.value = 'dsoVersionSelector';
     selectTemplate.setAttributeNode(selectId);
+
+    var selectClass = document.createAttribute('class');
+    selectClass.value = 'dso-version-selector';
     selectTemplate.setAttributeNode(selectClass);
+
+    var selectOnChange = document.createAttribute('onchange');
+    selectOnChange.value = 'openVersion()';
     selectTemplate.setAttributeNode(selectOnChange);
 
     jsonVersions.versions.reduce(function (branches, item) {
@@ -41,33 +47,33 @@
       return branches;
     }, [])
     .forEach(function (branch) {
-      var optGroup = document.createElement("optgroup");
+      var optGroup = document.createElement('optgroup');
       optGroup.setAttribute('label', branch.label);
 
-      branch.versions
-        .forEach(function (v)  {
-          var option = document.createElement("option");
-          option.setAttribute('value', v.version);
+      branch.versions.forEach(function (v) {
+        var option = document.createElement('option');
+        option.setAttribute('value', v.version);
 
-          if (v.version === window.location.pathname.slice(1, -1)) {
-            option.setAttribute('selected', true);
-          }
+        if (v.version === selectedVersion) {
+          option.setAttribute('selected', true);
+        }
 
-          option.appendChild(document.createTextNode(v.version));
-          optGroup.appendChild(option);
-        })
+        option.appendChild(document.createTextNode(v.version));
+        optGroup.appendChild(option);
+      });
 
       selectTemplate.appendChild(optGroup);
-    })
+    });
 
     // Insert select in .Header
-    var header = document.querySelector(".Header");
+    var header = document.querySelector('.Header');
     header.appendChild(selectTemplate);
 
     // Open correct version
     window.openVersion = function() {
       var version = selectTemplate.options[selectTemplate.selectedIndex].value;
-      window.location.href="/" + version;
-    }
+
+      window.location.href='/' + version;
+    };
   }
 })();
