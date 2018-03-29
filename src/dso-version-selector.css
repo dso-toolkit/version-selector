@@ -1,0 +1,9 @@
+.Header {
+  position: relative;
+}
+
+.dso-version-selector {
+  height: 65%;
+  position: absolute;
+  right: 20px;
+}
