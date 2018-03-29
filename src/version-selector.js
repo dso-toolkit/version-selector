@@ -6,7 +6,7 @@
   var versionRequest = new XMLHttpRequest();
   versionRequest.responseType = 'json';
   versionRequest.addEventListener('load', createSelector);
-  versionRequest.open('GET', '/version-selector.json');
+  versionRequest.open('GET', '/versions.json');
   versionRequest.send();
 
   function createSelector () {
@@ -64,7 +64,7 @@
     window.openVersion = function () {
       var version = selectTemplate.options[selectTemplate.selectedIndex].value;
 
-      window.location.href='/' + version;
+      window.location.href = '/' + version;
     };
   }
 })();
