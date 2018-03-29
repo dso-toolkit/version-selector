@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   // Get list of versions from versions.json
   var selectedVersion = window.location.pathname.slice(1, -1);
@@ -14,18 +14,9 @@
     var jsonVersions = this.response;
 
     var selectTemplate = document.createElement('select');
-
-    var selectId = document.createAttribute('id');
-    selectId.value = 'dsoVersionSelector';
-    selectTemplate.setAttributeNode(selectId);
-
-    var selectClass = document.createAttribute('class');
-    selectClass.value = 'dso-version-selector';
-    selectTemplate.setAttributeNode(selectClass);
-
-    var selectOnChange = document.createAttribute('onchange');
-    selectOnChange.value = 'openVersion()';
-    selectTemplate.setAttributeNode(selectOnChange);
+    selectTemplate.setAttribute('id', 'dsoVersionSelector');
+    selectTemplate.setAttribute('class', 'dso-version-selector');
+    selectTemplate.setAttribute('onchange', 'openVersion()');
 
     jsonVersions.versions.reduce(function (branches, item) {
       var branchLabel = item.branch || item.version.substr(0, 3) + '.x';
@@ -70,7 +61,7 @@
     header.appendChild(selectTemplate);
 
     // Open correct version
-    window.openVersion = function() {
+    window.openVersion = function () {
       var version = selectTemplate.options[selectTemplate.selectedIndex].value;
 
       window.location.href='/' + version;
