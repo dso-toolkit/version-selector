@@ -1,8 +1,10 @@
 (function () {
   'use strict';
+  var urlArray = window.location.pathname.split('/');
+  var currentVersion = getCurrentVersion();
+  var currentComponent = getCurrentComponent();
+  
   // Get list of versions from versions.json
-  var selectedVersion = window.location.pathname.slice(1, -1);
-
   var versionRequest = new XMLHttpRequest();
   versionRequest.responseType = 'json';
   versionRequest.addEventListener('load', createSelector);
@@ -45,7 +47,7 @@
         var option = document.createElement('option');
         option.setAttribute('value', v.version);
 
-        if (v.version === selectedVersion) {
+        if (v.version === currentVersion) {
           option.setAttribute('selected', true);
         }
 
@@ -64,7 +66,17 @@
     window.openVersion = function () {
       var version = selectTemplate.options[selectTemplate.selectedIndex].value;
 
-      window.location.href = '/' + version;
+      window.location.href='/' + version + '/' + currentComponent;
     };
+  }
+
+  function getCurrentVersion() {
+    var selectedVersion = urlArray[1];
+    return selectedVersion;
+  }
+
+  function getCurrentComponent() {
+    var selectedComponent = urlArray.slice(2).join('/');
+    return selectedComponent;
   }
 })();
