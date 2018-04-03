@@ -66,7 +66,7 @@
     window.openVersion = function () {
       var version = selectTemplate.options[selectTemplate.selectedIndex].value;
 
-      window.location.href='/' + version + '/' + currentComponent;
+      window.location.href = '/' + version + '/' + currentComponent;
     };
   }
 
