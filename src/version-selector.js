@@ -1,8 +1,8 @@
 (function () {
   'use strict';
-  var urlArray = window.location.pathname.split('/');
-  var currentVersion = getCurrentVersion();
-  var currentComponent = getCurrentComponent();
+  var pathname = window.location.pathname;
+  var currentVersion = getCurrentVersion(pathname);
+  var currentComponent = getCurrentComponent(pathname);
   
   // Get list of versions from versions.json
   var versionRequest = new XMLHttpRequest();
@@ -70,13 +70,13 @@
     };
   }
 
-  function getCurrentVersion() {
-    var selectedVersion = urlArray[1];
+  function getCurrentVersion(pathname) {
+    var selectedVersion = pathname.split('/')[1];
     return selectedVersion;
   }
 
-  function getCurrentComponent() {
-    var selectedComponent = urlArray.slice(2).join('/');
+  function getCurrentComponent(pathname) {
+    var selectedComponent = pathname.split('/').slice(2).join('/');
     return selectedComponent;
   }
 })();
