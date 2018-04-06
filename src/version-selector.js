@@ -1,8 +1,7 @@
 (function () {
   'use strict';
-  var pathname = window.location.pathname;
-  var currentVersion = getCurrentVersion(pathname);
-  var currentComponent = getCurrentComponent(pathname);
+  var currentVersion = getCurrentVersion();
+  var currentComponent = getCurrentComponent();
   
   // Get list of versions from versions.json
   var versionRequest = new XMLHttpRequest();
@@ -70,13 +69,11 @@
     };
   }
 
-  function getCurrentVersion(pathname) {
-    var selectedVersion = pathname.split('/')[1];
-    return selectedVersion;
+  function getCurrentVersion() {
+    return window.location.pathname.split('/')[1];
   }
 
-  function getCurrentComponent(pathname) {
-    var selectedComponent = pathname.split('/').slice(2).join('/');
-    return selectedComponent;
+  function getCurrentComponent() {
+    return window.location.pathname.split('/').slice(2).join('/');
   }
 })();
