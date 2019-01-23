@@ -38,6 +38,7 @@
       
       return branches;
     }, [])
+    .reverse()
     .forEach(function (branch) {
       var optGroup = document.createElement('optgroup');
       optGroup.setAttribute('label', branch.label);
