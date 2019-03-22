@@ -2,8 +2,23 @@
   position: relative;
 }
 
-.dso-version-selector {
+.dso-injections {
   height: 65%;
   position: absolute;
   right: 20px;
+}
+
+.dso-injections a,
+.dso-injections select {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.dso-injections a.dso-changelog {
+  display: inline;
+}
+
+.dso-injections * + * {
+  margin-left: 15px;
 }
