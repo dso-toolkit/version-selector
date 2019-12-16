@@ -7,7 +7,7 @@
   var versionRequest = new XMLHttpRequest();
   versionRequest.responseType = 'json';
   versionRequest.addEventListener('load', createSelector);
-  versionRequest.open('GET', '/versions.json');
+  versionRequest.open('GET', '/versions.json?t=' + new Date().getTime());
   versionRequest.send();
 
   function createSelector () {
