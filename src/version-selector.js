@@ -60,7 +60,7 @@
           option.setAttribute('selected', true);
         }
 
-        option.appendChild(document.createTextNode(v.version));
+        option.appendChild(document.createTextNode(v.label || v.version));
         optGroup.appendChild(option);
       });
 
