@@ -5,7 +5,6 @@
   
   // Get list of versions from versions.json
   var versionRequest = new XMLHttpRequest();
-  versionRequest.responseType = 'json';
   versionRequest.addEventListener('load', createSelector);
   versionRequest.open('GET', '/versions.json?t=' + new Date().getTime());
   versionRequest.send();
@@ -22,7 +21,7 @@
     changelogAnchorElement.innerText = 'CHANGELOG.md';
 
     // Create input select template
-    var jsonVersions = this.response;
+    var jsonVersions = JSON.parse(this.responseText);
 
     var selectTemplate = document.createElement('select');
     selectTemplate.setAttribute('id', 'dsoVersionSelector');
