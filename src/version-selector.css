@@ -1,16 +1,16 @@
-.Header {
+/* .Header {
   position: relative;
-}
+} */
 
 .dso-injections {
-  height: 65%;
+  /* height: 65%; */
   position: absolute;
   right: 20px;
-  transform: translateY(-50%);
-  top: 50%;
+  /* transform: translateY(-50%); */
+  /* top: 50%; */
 }
 
-.dso-injections a,
+/* .dso-injections a,
 .dso-injections select {
   display: inline-block;
   height: 100%;
@@ -23,4 +23,4 @@
 
 .dso-injections * + * {
   margin-left: 15px;
-}
+} */

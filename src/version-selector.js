@@ -2,7 +2,7 @@
   'use strict';
   var currentVersion = getCurrentVersion();
   var currentComponent = getCurrentComponent();
-  
+
   // Get list of versions from versions.json
   var versionRequest = new XMLHttpRequest();
   versionRequest.addEventListener('load', createSelector);
@@ -28,7 +28,7 @@
     selectTemplate.setAttribute('onchange', 'openVersion()');
 
     jsonVersions.versions.reduce(function (branches, item) {
-      var branchLabel = item.branch || item.version.substr(0, 3) + '.x';
+      var branchLabel = getBranchLabel(item);
       var branch = branches.filter(function (r) {
         return r.label === branchLabel;
       })[0];
@@ -41,9 +41,9 @@
 
         branches.push(branch);
       }
-      
+
       branch.versions.push(item);
-      
+
       return branches;
     }, [])
     .reverse()
@@ -77,12 +77,12 @@
     githubAnchorElement.appendChild(githubImageElement);
 
     // Insert CHANGELOG link, version selector, and GitHub URL
-    injectionsTemplate.appendChild(changelogAnchorElement);
+    // injectionsTemplate.appendChild(changelogAnchorElement);
     injectionsTemplate.appendChild(selectTemplate);
-    injectionsTemplate.appendChild(githubAnchorElement);
+    // injectionsTemplate.appendChild(githubAnchorElement);
 
     // Insert .dso-injections in .Header
-    var header = document.querySelector('.Header');
+    var header = document.querySelector('.Header') || document.querySelector('.toolkit-injections');
     header.appendChild(injectionsTemplate);
 
     // Open correct version
@@ -99,5 +99,15 @@
 
   function getCurrentComponent() {
     return window.location.pathname.split('/').slice(2).join('/');
+  }
+
+  function getBranchLabel(item) {
+    if (item.branch) {
+      return item.branch;
+    }
+
+    const [major, minor] = item.version.split('.');
+
+    return `${major}.${minor}.x`;
   }
 })();
