@@ -106,8 +106,8 @@
       return item.branch;
     }
 
-    const [major, minor] = item.version.split('.');
+    var versions = item.version.split('.');
 
-    return `${major}.${minor}.x`;
+    return versions[0] + '.' + versions[1] + '.x';
   }
 })();
