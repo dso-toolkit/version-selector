@@ -81,19 +81,19 @@
 
   var appElement = document.createElement('div');
   appElement.id = 'version-selector-app';
-
+  
   rootElement.appendChild(appElement);
 
   new Vue({
     render: function (h) {
       return h(DsoVersionSelector);
     }
-  }).$mount('#version-selector-app');
+  }).$mount('#version-selector-app');    
 
   function getCurrentComponent() {
     return window.location.pathname.split('/').slice(2).join('/') || null;
   }
-
+  
   function getCurrentVersion() {
     var version = window.location.pathname.split('/')[1] || '';
     if (version[0] === '_') {
@@ -102,7 +102,7 @@
 
     return version;
   }
-
+  
   function getVersions(callback) {
     var versionRequest = new XMLHttpRequest();
     versionRequest.addEventListener('load', function () {
