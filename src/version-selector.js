@@ -4,11 +4,12 @@
       '<nav class="navbar navbar-right">' +
         '<ul class="nav navbar-nav">' +
           '<li style="margin-right: 8px" v-if="isLatestVersion">' +
-            '<span class="dso-label navbar-text">Laatste versie</span>' +
+            '<span class="dso-label navbar-text"><span class="sr-only">Geselecteerde versie is de </span>laatste versie</span>' +
           '</li>' +
-          '<dropdown tag="li" ref="dropdown" menu-class="dso-checkable" class="navbar-text">' +
-            '<button type="primary" class="btn btn-link">' +
-              '<span>{{ currentVersion || \'Versies\' }}</span>' +
+          '<dropdown tag="li" ref="dropdown" class="navbar-text">' +
+            '<button class="btn btn-link">' +
+              '<span v-if="currentVersion"><span class="sr-only">Geselecteerde versie: </span>{{ currentVersion }}<span class="sr-only">; Selecteer versies</span></span>' +
+              '<span v-else>Selecteer versies</span>' +
               '<svg class="di di-chevron-down">' +
                 '<use href="/master/dso-icons.svg#chevron-down" />' +
               '</svg>' +
@@ -81,19 +82,19 @@
 
   var appElement = document.createElement('div');
   appElement.id = 'version-selector-app';
-  
+
   rootElement.appendChild(appElement);
 
   new Vue({
     render: function (h) {
       return h(DsoVersionSelector);
     }
-  }).$mount('#version-selector-app');    
+  }).$mount('#version-selector-app');
 
   function getCurrentComponent() {
     return window.location.pathname.split('/').slice(2).join('/') || null;
   }
-  
+
   function getCurrentVersion() {
     var version = window.location.pathname.split('/')[1] || '';
     if (version[0] === '_') {
@@ -102,7 +103,7 @@
 
     return version;
   }
-  
+
   function getVersions(callback) {
     var versionRequest = new XMLHttpRequest();
     versionRequest.addEventListener('load', function () {
